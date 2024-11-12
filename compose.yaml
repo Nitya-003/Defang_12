@@ -1,0 +1,21 @@
+services:
+  app:
+    restart: unless-stopped
+    # domainname: mydomain.com # if you want to use your own domain
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+
+    ports:
+      - target: 3000
+        mode: ingress
+        published: 3000
+
+    healthcheck:
+      test: wget -q --spider http://localhost:3000/ || exit 1
+
+    deploy:
+      resources:
+        reservations:
+          cpus: '0.50'
+          memory: 512M
